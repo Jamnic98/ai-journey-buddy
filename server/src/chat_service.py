@@ -12,5 +12,6 @@ def handle_send_message_request(request: Request):
         abort(HTTPStatus.BAD_REQUEST, description='Content-Type must be application/json')
 
     if msg := request.json['msg']:
-        return chat_bot.generate_response(msg)
-    abort(HTTPStatus.BAD_REQUEST, description='No message provided')
+        pass
+    return chat_bot.generate_response(msg)
+    # abort(HTTPStatus.BAD_REQUEST, description='No message provided')
