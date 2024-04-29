@@ -1,3 +1,3 @@
 export * from './ChatInput'
-export * from './ChatMessage'
-export * from './ChatMessageList'
+export * from './Message'
+export * from './MessageList'

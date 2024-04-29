@@ -1,23 +1,23 @@
 import {useEffect, useRef, useState} from 'react'
 import {Link, useNavigate, useParams} from 'react-router-dom'
 
-import {ChatInput, ChatMessageList} from '../components'
+import {ChatInput, MessageList} from '../components'
 import {fetchChatById, fetchChatbotResponse} from '../api/chat'
-import {Chat} from '../types/global'
+import {ChatType, MessageType} from '../types/global'
 
 export const ChatPage = () => {
+	const bottomRef = useRef<null | HTMLDivElement>(null)
 	const navigate = useNavigate()
 	const {chatId} = useParams()
-	// state
 	const [isLoadingResponse, setIsLoadingResponse] = useState<boolean>(false)
 	const [messages, setMessages] = useState<string[]>([])
 
 	useEffect(() => {
-		const loadChat = async (chatId: string) => {
+		const loadChat = async (chatId: number) => {
 			try {
-				const chat: Chat = await fetchChatById(chatId)
+				const chat: ChatType = await fetchChatById(chatId)
 				const messages = chat.messages.map(
-					(message: any) => message.message_text
+					(message: MessageType) => message.text
 				)
 				setMessages(messages)
 			} catch (error) {
@@ -25,10 +25,8 @@ export const ChatPage = () => {
 				navigate('/404')
 			}
 		}
-		chatId && loadChat(chatId)
+		chatId && loadChat(Number(chatId))
 	}, [chatId, navigate])
-
-	const bottomRef = useRef<null | HTMLDivElement>(null)
 
 	useEffect(() => {
 		if (bottomRef && bottomRef.current) {
@@ -38,16 +36,16 @@ export const ChatPage = () => {
 
 	const handleSendMsg = async (msg: string) => {
 		setIsLoadingResponse(true)
-		// add user message
+		// update messages with user input text
 		setMessages((messages) => [...messages, msg])
 		try {
-			console.log(msg)
-			const response = await fetchChatbotResponse(chatId as string, msg)
+			const response = await fetchChatbotResponse(Number(chatId), msg)
 			setMessages((messages) => [...messages, response])
 		} catch (error) {
 			console.error(error)
+			alert('Failed to send message.')
 		}
-		setIsLoadingResponse((isLoadingResponse) => !isLoadingResponse)
+		setIsLoadingResponse(false)
 	}
 
 	return (
@@ -55,11 +53,11 @@ export const ChatPage = () => {
 			<h1>Chat Page</h1>
 			<h2>Chat {chatId}</h2>
 			<div style={{height: '300px', border: '1px solid', overflow: 'auto'}}>
-				<ChatMessageList messages={messages} />
+				<MessageList messages={messages} />
+				{isLoadingResponse && <div>...loading</div>}
 				<div ref={bottomRef}></div>
 			</div>
 			<ChatInput sendMsg={handleSendMsg} disableSubmit={isLoadingResponse} />
-			<br />
 			<Link to="/">return to home page</Link>
 		</div>
 	)

@@ -1,1 +1,3 @@
-export type Chat = {id: number; messages: []}
+export type MessageType = {text: string}
+
+export type ChatType = {id: number; messages: MessageType[]}

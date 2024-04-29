@@ -1,8 +1,8 @@
-type ChatMessageListProps = {
+type MessageListProps = {
 	messages: string[]
 }
 
-export const ChatMessageList = ({messages}: ChatMessageListProps) => {
+export const MessageList = ({messages}: MessageListProps) => {
 	return (
 		<ul>
 			{messages.map((message, index) => {
