@@ -3,7 +3,7 @@ from flask_cors import CORS
 
 from src.db import db
 from src.chat_service import handle_get_all_chats, handle_get_chat_by_id, \
-    handle_create_chat, handle_send_msg
+    handle_create_chat, handle_send_msg, handle_delete_chat_by_id
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -20,23 +20,29 @@ with app.app_context():
 @app.route('/chat', methods=['GET'])
 def get_all_chats():
     response = handle_get_all_chats()
-    return jsonify(response)
+    return jsonify(response), 200
 
 
 @app.route('/chat/<int:chat_id>', methods=['GET'])
 def get_chat_by_id(chat_id):
     response = handle_get_chat_by_id(chat_id)
-    return jsonify(response)
+    return jsonify(response), 200
 
 
 @app.route('/chat', methods=['POST'])
 def start_new_chat():
     response = handle_create_chat()
-    return jsonify(response)
+    return jsonify(response), 200
 
 
 @ app.route('/chat/<int:chat_id>', methods=['POST'])
 def send_msg(chat_id):
     request_data = request.json
     response = handle_send_msg(chat_id, request_data)
-    return jsonify(response)
+    return jsonify(response), 200
+
+
+@app.route('/chat/<int:chat_id>', methods=['DELETE'])
+def delete_chat(chat_id):
+    response = handle_delete_chat_by_id(chat_id)
+    return jsonify(response), 204

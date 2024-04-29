@@ -1,8 +1,7 @@
+from openai import OpenAI
 from typing import List
-from enum import Enum
 
 from src.settings import config
-from openai import OpenAI
 
 
 class Chatbot:
@@ -39,12 +38,12 @@ class Chatbot:
 
     def load_chat(self, message_list: List[str]):
         self.message_thread.clear()
-        for i, message_text in enumerate(message_list):
+        for i, text in enumerate(message_list):
             if i % 2 == 0:
                 role = "user"
             else:
                 role = "system"
-            msg = self.__prepare_msg_for_chatbot(role, message_text)
+            msg = self.__prepare_msg_for_chatbot(role, text)
             self.message_thread.append(msg)
 
     def generate_response(self, msg: str):

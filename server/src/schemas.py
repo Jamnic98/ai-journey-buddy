@@ -11,7 +11,6 @@ class MessageSchema(SQLAlchemyAutoSchema):
         include_fk = True
         load_instance = True
 
-    id = fields.Int(load_only=True)
     chat_id = fields.Int(load_only=True)
 
 

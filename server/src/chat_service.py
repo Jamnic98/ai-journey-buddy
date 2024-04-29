@@ -22,7 +22,7 @@ def handle_get_chat_by_id(chat_id: int):
     chat = db.session.query(Chat).filter_by(id=chat_id).first()
     if chat:
         # load chatbot with previous messages
-        chatbot.load_chat([msg.message_text for msg in chat.messages])
+        chatbot.load_chat([msg.text for msg in chat.messages])
         return chat_schema.dump(chat)
     else:
         abort(404, description=f'Chat with id {chat_id} does not exist.')
@@ -62,3 +62,14 @@ def handle_send_msg(chat_id: int, request_data: dict):
 
     else:
         abort(400, description='No message was provided.')
+
+
+def handle_delete_chat_by_id(chat_id: int):
+    """ deletes a chat by id """
+    chat = Chat.query.get(chat_id)
+    if not chat:
+        abort(404, description=f'Chat with id {chat_id} does not exist.')
+
+    else:
+        db.session.delete(chat)
+        db.session.commit()
