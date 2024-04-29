@@ -1,10 +1,16 @@
-import {ChatBox} from './components'
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import {ChatPage, HomePage, NotFoundPage} from './pages'
 
-function App() {
+const App = () => {
 	return (
-		<div>
-			<ChatBox />
-		</div>
+		<Router>
+			<Routes>
+				<Route path="/" element={<HomePage />} />
+				<Route path="/chat/:chatId" element={<ChatPage />} />
+				<Route path="/404" element={<NotFoundPage />} />
+				<Route path="*" element={<NotFoundPage />} />
+			</Routes>
+		</Router>
 	)
 }
 

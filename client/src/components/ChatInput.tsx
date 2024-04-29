@@ -2,7 +2,7 @@ import {ChangeEvent, FormEvent, useState} from 'react'
 
 type ChatInputProps = {
 	sendMsg: (text: string) => void
-	disabled?: boolean
+	disableSubmit?: boolean
 }
 
 export const ChatInput = (props: ChatInputProps) => {
@@ -28,8 +28,7 @@ export const ChatInput = (props: ChatInputProps) => {
 			/>
 			<button
 				type="submit"
-				// TODO: Remove comment
-				disabled={props.disabled /* || userInput.length === 0 */}
+				disabled={props.disableSubmit || userInput.length === 0}
 			>
 				Send
 			</button>

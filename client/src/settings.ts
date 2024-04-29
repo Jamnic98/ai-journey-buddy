@@ -10,5 +10,3 @@ const serverUrl =
 export const config: Config = {
 	serverUrl,
 }
-
-console.log(serverUrl)
